@@ -5,9 +5,38 @@
   </Configs>
   <NewExtensions/>
   <sounds name="sound"/>
-  <sprites name="sprites"/>
+  <sprites name="sprites">
+    <sprite>sprites\spr_player_down</sprite>
+    <sprite>sprites\spr_player_up</sprite>
+    <sprite>sprites\spr_player_left</sprite>
+    <sprite>sprites\spr_player_right</sprite>
+    <sprite>sprites\spr_plantpot</sprite>
+    <sprite>sprites\spr_startpos</sprite>
+    <sprite>sprites\spr_collision</sprite>
+    <sprite>sprites\spr_bucket</sprite>
+    <sprite>sprites\spr_door</sprite>
+  </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
+  <objects name="objects">
+    <object>objects\GameState</object>
+    <objects name="Controllers">
+      <object>objects\InputController</object>
+      <object>objects\DayController</object>
+    </objects>
+    <objects name="Game Objects">
+      <object>objects\par_solid</object>
+      <object>objects\obj_player</object>
+      <object>objects\obj_startpos</object>
+      <object>objects\obj_plantpot</object>
+      <object>objects\obj_collision</object>
+      <object>objects\obj_bucket</object>
+      <object>objects\obj_door</object>
+    </objects>
+  </objects>
+  <rooms name="rooms">
+    <room>rooms\rm_main</room>
+  </rooms>
   <help>
     <rtf>help.rtf</rtf>
   </help>
