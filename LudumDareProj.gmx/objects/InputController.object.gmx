@@ -57,31 +57,28 @@ menu = false;
             <string>/// Check controls
 if ( GameState.control ) {
     if ( !GameState.isPaused ) {
+        // If Menu isn't active
         if ( !GameState.isMenu ) {
             // Left
             if ( keyboard_check(vk_left) ) {
-                //keyboard_clear(vk_left);
                 left = true;
             } else { 
                 left = false; 
             }
             // Right    
             if ( keyboard_check(vk_right) ) {
-                //keyboard_clear(vk_right);
                 right = true;
             } else {
                 right = false;
             }
             // Up
             if ( keyboard_check(vk_up) ) {
-                //keyboard_clear(vk_up);
                 up = true;
             } else {
                 up = false;
             }
             // Down
             if ( keyboard_check(vk_down) ) {
-                //keyboard_clear(vk_down);
                 down = true;
             } else {
                 down = false;
@@ -100,6 +97,49 @@ if ( GameState.control ) {
             } else {
                 menu = false;
             }      
+        }
+        // Else if Menu is open
+        else {
+            if ( instance_exists(MenuController) ) {
+                if (MenuController.left_rot != true &amp;&amp; MenuController.right_rot != true &amp;&amp;
+                    MenuController.spiral != true &amp;&amp; MenuController.close != true ) {
+                    // Menu handling
+                    if ( keyboard_check (vk_left) ) {
+                        MenuController.left_rot = true;
+                        // Revert flags triggered by pressing 'Z' on an item but not yet confirming it
+                        menuButtonPressed = false;
+                        MenuController.menuItemSelected = -1;
+                    }
+                    else if ( keyboard_check (vk_right) ) {
+                        MenuController.right_rot = true;
+                        // Revert flags triggered by pressing 'Z' on an item but not yet confirming it
+                        menuButtonPressed = false;
+                        MenuController.menuItemSelected = -1;
+                    }
+                    else if ( keyboard_check (ord('Z')) ) {
+                        keyboard_clear(ord('Z'));
+                        // If item has already been selected, press again to confirm
+                        if ( menuButtonPressed == true ) {
+                            MenuController.menuButtonConfirmed = true;
+                            menuButtonPressed = false;
+                            //obj_player_fsm.windowButtonPressed = true;
+                            show_debug_message("Item '" + MenuController.item_array[MenuController.id_tag, 1] + "' has been confirmed.");
+                        }
+                        // Press button to select;
+                        else {
+                            menuButtonPressed = true;
+                            with ( MenuController ) {
+                                menuItemSelected = item_array[id_tag, 0];
+                                show_debug_message("Item '" + item_array[id_tag, 1] + "' has been selected.");
+                            }
+                        }
+                    }
+                    else if ( keyboard_check (vk_add) ) {
+                        keyboard_clear(vk_add);
+                        MenuController.close = true;
+                    }
+                }
+            }
         }
     }
 }

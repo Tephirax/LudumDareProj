@@ -26,7 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>/// Initialise variables
-movespeed = 4;
+movespeed = 2;
 facing = 'down';
 
 
@@ -89,9 +89,14 @@ else if ( InputController.action ) {
     else if ( facing == 'down' &amp;&amp; place_meeting(x, y + 8, obj_plantpot) || (facing == 'left' &amp;&amp; place_meeting(x - 8, y, obj_plantpot)) ) {
         var pot = instance_position(x, y + 8, obj_plantpot);
         // If pot is empty, start seed selection
-        if ( !pot.planted ) {
-            show_debug_message('Seed selection started');
-            // TODO: Start seed selection   
+        if ( !pot.planted ) { 
+            if ( !instance_exists(MenuController) ) {
+                show_debug_message('Seed selection started');
+                // Disable player animations;
+                image_speed = 0;
+                show_debug_message("Spawning MenuController");
+                instance_create(x, y, MenuController); // State st_menu is now run on MenuController 
+            }
         } 
         // If pot is planted, water pot (if watering can has enough water0
         else {
@@ -115,6 +120,7 @@ else if ( InputController.action ) {
     else {
         show_debug_message('Water water everywhere');
         // TODO: Play watering animation in facing direction
+        GameState.waterInCan -= 1;
     }    
 }
 else if ( InputController.menu ) {

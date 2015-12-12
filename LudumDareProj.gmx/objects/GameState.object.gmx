@@ -32,6 +32,8 @@ isPaused = false; // Is the game paused
 
 maxWater = 6;
 waterInCan = maxWater;
+
+create_master_lists();
 </string>
           </argument>
         </arguments>
