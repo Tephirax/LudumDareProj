@@ -31,6 +31,7 @@ right = false;
 up = false;
 down = false;
 action = false;
+achbutton = false;
 menu = false;
 
 menuButtonPressed = false;
@@ -60,8 +61,18 @@ menuButtonConfirmed = false;
             <string>/// Check controls
 if ( GameState.control ) {
     if ( !GameState.isPaused ) {
+        if ( keyboard_check(vk_escape) ) {
+            game_end();
+        }
         // If Menu isn't active
         if ( !GameState.isMenu ) {
+            // Achievement Panel
+            if ( keyboard_check(vk_tab) ) {
+                keyboard_clear(vk_tab);
+                if ( !ds_list_empty(InventoryController.inventorylist) ) {
+                    achbutton = !achbutton;
+                }
+            }
             // Action
             if ( keyboard_check(ord("X")) ) {
                 keyboard_clear(ord("X"));

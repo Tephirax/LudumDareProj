@@ -26,7 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>/// Initialise variables
-movespeed = 2;
+movespeed = 1;
 facing = 'down';
 pot = 0;
 </string>
@@ -35,6 +35,28 @@ pot = 0;
       </action>
     </event>
     <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// Depth correction
+depth = y * -1;
+</string>
+          </argument>
+        </arguments>
+      </action>
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -60,33 +82,64 @@ if ( InputController.action ) {
         // TODO: Play audio
         GameState.waterInCan = GameState.maxWater;
     }
-    // If in front of empty pot...
-    else if ( facing == 'down' &amp;&amp; place_meeting(x, y + 8, obj_plantpot) || (facing == 'left' &amp;&amp; place_meeting(x - 8, y, obj_plantpot)) ) {
-        pot = instance_position(x, y + 8, obj_plantpot);
-        // If pot is empty, start seed selection
-        if ( pot.planted == -1 ) { 
-            if ( !instance_exists(MenuController) ) {
-                show_debug_message('Seed selection started');
-                // Disable player animations;
-                image_speed = 0;
-                show_debug_message("Spawning MenuController");
-                instance_create(x, y, MenuController); // State st_menu is now run on MenuController 
-            }
-        } 
-        // If pot is planted, water pot (if watering can has enough water0
-        else {
-            if ( GameState.waterInCan &gt; 0 ) {
-                show_debug_message('Pot watered');
-                // TODO: Play watering animation 
-                pot.watered = true;
-                GameState.waterInCan -= 1;
-                
-                if ( pot.withered ) {
-                    pot.withered = false;
+    // If in front of pot...
+    else if ( (facing == 'down' &amp;&amp; place_meeting(x, y + 8, obj_plantpot)) || (facing == 'left' &amp;&amp; place_meeting(x - 8, y, obj_plantpot)) 
+           || (facing == 'up' &amp;&amp; place_meeting(x, y - 8, obj_plantpot)) || (facing == 'right' &amp;&amp; place_meeting(x + 8, y, obj_plantpot)) ) {
+        if ( facing == 'down' ) { pot = instance_position(x, y + 8, obj_plantpot); }
+        else if ( facing == 'left' ) { pot = instance_position(x - 24, y - 8, obj_plantpot); }
+        else if ( facing == 'up' ) { pot = instance_position(x, y - 40, obj_plantpot); }
+        else if ( facing == 'right' ) { pot = instance_position(x + 24, y - 8, obj_plantpot); }
+        
+        if ( instance_exists(pot) ) {
+            // If pot is empty, start seed selection
+            if ( pot.planted == -1 ) { 
+                if ( !instance_exists(MenuController) ) {
+                    show_debug_message('Seed selection started');
+                    // Disable player animations;
+                    image_speed = 0;
+                    show_debug_message("Spawning MenuController");
+                    instance_create(x, y, MenuController); // State st_menu is now run on MenuController 
                 }
-            } else {
-                show_debug_message('Out of water');
-                // TODO: Play 'out of water' animation
+            } 
+            // If pot is planted... 
+            else {
+                // If plant is at max growth, pick plant
+                if ( pot.growthstage == pot.maxstage ) {
+                    ds_list_insert(InventoryController.inventorylist, 0, pot.planted);
+                    // If inventory is full, push first item out
+                    var invsize = ds_list_size(InventoryController.inventorylist);
+                    show_debug_message("invsize = " + string(invsize));
+                    if ( invsize &gt; InventoryController.inventorymax ) {
+                        ds_list_delete(InventoryController.inventorylist, invsize - 1);
+                    }
+                    // Remove plant from pot &amp; reset variables
+                    with ( pot ) {
+                        planted = -1;
+                        watered = false;
+                        withered = false;
+                        witherdays = 0;
+                        witherdaytarget = -1;
+                    
+                        growthdays = 0;
+                        growthstage = 0;
+                        maxstage = 4;
+                        growthdaytarget = -1;
+                    }
+                }
+                // Water pot (if watering can has enough water0
+                else if ( GameState.waterInCan &gt; 0 ) {
+                    show_debug_message('Pot watered');
+                    // TODO: Play watering animation 
+                    pot.watered = true;
+                    GameState.waterInCan -= 1;
+                
+                    if ( pot.withered ) {
+                        pot.withered = false;
+                    }
+                } else {
+                    show_debug_message('Out of water');
+                    // TODO: Play 'out of water' animation
+                }
             }
         }        
     }

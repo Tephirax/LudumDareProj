@@ -41,6 +41,12 @@ instance_create(0, 0, obj_screenfade);
 // Create DayController
 instance_create(0, 0, DayController);
 
+// Create InventoryController
+instance_create(0, 0, InventoryController);
+
+// Create AchievementController
+instance_create(0, 0, AchievementController);
+
 menuItemSelected = -1;
 </string>
           </argument>

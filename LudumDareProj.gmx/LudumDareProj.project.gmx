@@ -22,6 +22,9 @@
     <sprite>sprites\spr_menu_flower2</sprite>
     <sprite>sprites\spr_menu_flower3</sprite>
     <sprite>sprites\spr_selector</sprite>
+    <sprite>sprites\spr_inventory</sprite>
+    <sprite>sprites\spr_achpanel</sprite>
+    <sprite>sprites\spr_tabkey</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -45,6 +48,8 @@
       <object>objects\InputController</object>
       <object>objects\DayController</object>
       <object>objects\MenuController</object>
+      <object>objects\InventoryController</object>
+      <object>objects\AchievementController</object>
     </objects>
     <objects name="Game Objects">
       <object>objects\par_solid</object>

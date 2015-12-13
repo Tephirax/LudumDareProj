@@ -120,7 +120,7 @@ if ( transitionout ) {
             screen_alpha += 0.02;
         } else {
             other.transitionout = false;
-            other.alarm[0] = 50;
+            other.alarm[0] = 15;
         }
     }
 }
@@ -162,6 +162,7 @@ if ( interstitial ) {
     if ( dayofmonth &gt; 28 ) {
         dayofmonth = 1;
     }
+    obj_player.facing = 'down';
     
     // TODO: Define new day
     
@@ -176,7 +177,7 @@ if ( transitionin ) {
             screen_alpha -= 0.02;
         } else {
             other.transitionin = false;
-            other.alarm[1] = 50;
+            other.alarm[1] = 15;
         }
     }
 }
