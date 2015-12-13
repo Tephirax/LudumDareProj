@@ -34,6 +34,11 @@ maxWater = 6;
 waterInCan = maxWater;
 
 create_master_lists();
+
+// Create screenfade object for fade-to-black transitions
+instance_create(0, 0, obj_screenfade);
+
+menuItemSelected = -1;
 </string>
           </argument>
         </arguments>

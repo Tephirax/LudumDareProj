@@ -15,6 +15,7 @@
     <sprite>sprites\spr_collision</sprite>
     <sprite>sprites\spr_bucket</sprite>
     <sprite>sprites\spr_door</sprite>
+    <sprite>sprites\spr_menu_lettuce</sprite>
     <sprite>sprites\spr_menu_flower1</sprite>
     <sprite>sprites\spr_menu_flower2</sprite>
     <sprite>sprites\spr_menu_flower3</sprite>
@@ -51,12 +52,16 @@
       <object>objects\obj_bucket</object>
       <object>objects\obj_door</object>
     </objects>
-    <object>objects\obj_item0_menu</object>
-    <object>objects\obj_item1_menu</object>
-    <object>objects\obj_item2_menu</object>
-    <object>objects\par_item_menu</object>
     <objects name="Menu Objects">
+      <object>objects\par_item_menu</object>
       <object>objects\obj_selector</object>
+      <object>objects\obj_screenfade</object>
+      <object>objects\obj_item0_menu</object>
+      <object>objects\obj_item1_menu</object>
+      <object>objects\obj_item2_menu</object>
+      <object>objects\obj_item3_menu</object>
+      <object>objects\obj_item4_menu</object>
+      <object>objects\obj_item5_menu</object>
     </objects>
   </objects>
   <rooms name="rooms">

@@ -8,18 +8,16 @@ switch(argument0)
         GameState.isMenu = true; // Pause game action & switch to menu controls
         InputController.menu = false;
         InputController.menuButtonPressed = false;
-        menuItemSelected = -1;
+        GameState.menuItemSelected = -1;
         InputController.menuButtonConfirmed = false;
         // Set up ring menu & initialise variables
         create_menu_array(); // Script to check master item list and create item_array containing items to display; 
         if ( itemn > 0 ) { // If there are any items in the inventory
             // Darken screen
-            /*if ( instance_exists(obj_screenfade) ) { 
+            if ( instance_exists(obj_screenfade) ) { 
                 obj_screenfade.screen_alpha = 0.4;
             }
-            // Raise player sprite above screenfade
-            obj_player_fsm.depth -= 11000;
-            */
+            
             menu_layer = 0; // Starting layer of menu (first value in item_array)
             menu_layer_max = 0; // Since we're only having one level of ring menu in this game
             if (menu_layer == 0)
@@ -34,7 +32,7 @@ switch(argument0)
                 menu_n = itemn;
             }
             angle = 360 / menu_n;
-            orbit_size = 50; // Final distance from centre to orbit
+            orbit_size = 80; // Final distance from centre to orbit
             max_orbit = 360; // Total orbit (for expansion)
             orbit = max_orbit; // Current distance from centre to orbit
             contract_speed = 10; // Speed of contraction
@@ -54,11 +52,11 @@ switch(argument0)
         show_debug_message("state st_menu is now closing");
         InputController.menuButtonConfirmed = false; // Reset menuButtonConfirmed flag
         GameState.isMenu = false; // Unpause game action & switch back to normal controls
-        if ( itemn > 0 ) {
+        if ( itemn > 0 ) {        
             // Lighten screen
-            /*if ( instance_exists(obj_screenfade) ) {
+            if ( instance_exists(obj_screenfade) ) {
                 obj_screenfade.screen_alpha = 0;
-            }*/
+            }
             for (i = 0; i < menu_n; i += 1) // Destroy all items in menu
             {
                 with ringmenu[i]

@@ -45,37 +45,37 @@ master_item_list[item_count,3] = 1;
 master_item_list[item_count,4] = 8;
 master_item_list[item_count,5] = 20;
 master_item_list[item_count,6] = 10;
-/*
+
 // #3 - Flower 1
-global.item_count = 0;
-global.master_item_list[global.item_count,0] = global.item_count;
-global.master_item_list[global.item_count,1] = 'Flower 1';
-global.master_item_list[global.item_count,2] = obj_item3_menu; 
-global.master_item_list[global.item_count,3] = 1; 
-global.master_item_list[global.item_count,4] = 8;
-global.master_item_list[global.item_count,5] = 20;
-global.master_item_list[global.item_count,6] = 10;
+item_count += 1;
+master_item_list[item_count,0] = item_count;
+master_item_list[item_count,1] = 'Flower 1';
+master_item_list[item_count,2] = obj_item3_menu; 
+master_item_list[item_count,3] = 1; 
+master_item_list[item_count,4] = 8;
+master_item_list[item_count,5] = 20;
+master_item_list[item_count,6] = 10;
 
 // #4 - Flower 2
-global.item_count += 1;
-global.master_item_list[global.item_count,0] = global.item_count;
-global.master_item_list[global.item_count,1] = 'Flower 2';
-global.master_item_list[global.item_count,2] = obj_item4_menu; 
-global.master_item_list[global.item_count,3] = 1; 
-global.master_item_list[global.item_count,4] = 8;
-global.master_item_list[global.item_count,5] = 20;
-global.master_item_list[global.item_count,6] = 10;
+item_count += 1;
+master_item_list[item_count,0] = item_count;
+master_item_list[item_count,1] = 'Flower 2';
+master_item_list[item_count,2] = obj_item4_menu; 
+master_item_list[item_count,3] = 1; 
+master_item_list[item_count,4] = 8;
+master_item_list[item_count,5] = 20;
+master_item_list[item_count,6] = 10;
 
 // #5 - Flower 3
-global.item_count += 1;
-global.master_item_list[global.item_count,0] = global.item_count;
-global.master_item_list[global.item_count,1] = 'Flower 3';
-global.master_item_list[global.item_count,2] = obj_item5_menu; 
-global.master_item_list[global.item_count,3] = 1; 
-global.master_item_list[global.item_count,4] = 8;
-global.master_item_list[global.item_count,5] = 20;
-global.master_item_list[global.item_count,6] = 10;
-*/
+item_count += 1;
+master_item_list[item_count,0] = item_count;
+master_item_list[item_count,1] = 'Flower 3';
+master_item_list[item_count,2] = obj_item5_menu; 
+master_item_list[item_count,3] = 1;
+master_item_list[item_count,4] = 8;
+master_item_list[item_count,5] = 20;
+master_item_list[item_count,6] = 10;
+
 /*
 // Create master option list array (if required)
 // i) option name
