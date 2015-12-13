@@ -52,31 +52,7 @@ pot = 0;
           <argument>
             <kind>1</kind>
             <string>/// Handle inputs
-if ( InputController.left ) {
-    facing = 'left';
-    if ( !place_meeting(x - movespeed, y, par_solid) ) {
-        x -= movespeed;
-    }
-}
-else if ( InputController.right ) {
-    facing = 'right';
-    if ( !place_meeting(x + movespeed, y, par_solid) ) {
-        x += movespeed;
-    }
-}
-else if ( InputController.up ) {
-    facing = 'up';
-    if ( !place_meeting(x, y - movespeed, par_solid ) ) {
-        y -= movespeed;
-    }
-}
-else if ( InputController.down ) {
-    facing = 'down';
-    if ( !place_meeting(x, y + movespeed, par_solid) ) {
-        y += movespeed;
-    }
-}
-else if ( InputController.action ) {
+if ( InputController.action ) {
     InputController.action = false;
     // Refill watering can
     if ( (facing == 'up' &amp;&amp; place_meeting(x, y - 8, obj_bucket)) || (facing == 'left' &amp;&amp; place_meeting(x - 8, y, obj_bucket)) ) {
@@ -104,6 +80,10 @@ else if ( InputController.action ) {
                 // TODO: Play watering animation 
                 pot.watered = true;
                 GameState.waterInCan -= 1;
+                
+                if ( pot.withered ) {
+                    pot.withered = false;
+                }
             } else {
                 show_debug_message('Out of water');
                 // TODO: Play 'out of water' animation
@@ -121,6 +101,30 @@ else if ( InputController.action ) {
         // TODO: Play watering animation in facing direction
         GameState.waterInCan -= 1;
     }    
+}
+else if ( InputController.left ) {
+    facing = 'left';
+    if ( !place_meeting(x - movespeed, y, par_solid) ) {
+        x -= movespeed;
+    }
+}
+else if ( InputController.right ) {
+    facing = 'right';
+    if ( !place_meeting(x + movespeed, y, par_solid) ) {
+        x += movespeed;
+    }
+}
+else if ( InputController.up ) {
+    facing = 'up';
+    if ( !place_meeting(x, y - movespeed, par_solid ) ) {
+        y -= movespeed;
+    }
+}
+else if ( InputController.down ) {
+    facing = 'down';
+    if ( !place_meeting(x, y + movespeed, par_solid) ) {
+        y += movespeed;
+    }
 }
 </string>
           </argument>
@@ -180,6 +184,10 @@ if ( GameState.menuItemSelected != -1 &amp;&amp; !instance_exists(MenuController
     show_debug_message("GameState.menuItemSelected = " + string(GameState.menuItemSelected));
     pot.planted = GameState.menuItemSelected;
     GameState.menuItemSelected = -1;
+    
+    with ( pot ) {
+        scr_assigngrowth();
+    }
 }
 </string>
           </argument>

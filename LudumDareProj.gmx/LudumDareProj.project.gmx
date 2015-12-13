@@ -16,6 +16,8 @@
     <sprite>sprites\spr_bucket</sprite>
     <sprite>sprites\spr_door</sprite>
     <sprite>sprites\spr_menu_lettuce</sprite>
+    <sprite>sprites\spr_menu_tomato</sprite>
+    <sprite>sprites\spr_menu_onion</sprite>
     <sprite>sprites\spr_menu_flower1</sprite>
     <sprite>sprites\spr_menu_flower2</sprite>
     <sprite>sprites\spr_menu_flower3</sprite>
@@ -35,6 +37,7 @@
       <script>scripts\statestart.gml</script>
       <script>scripts\statestop.gml</script>
     </scripts>
+    <script>scripts\scr_assigngrowth.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\GameState</object>

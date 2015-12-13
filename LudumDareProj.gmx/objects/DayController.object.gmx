@@ -7,7 +7,240 @@
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
-  <events/>
+  <events>
+    <event eventtype="0" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// Initialise variables
+transitionout = false;
+interstitial = false;
+transitionin = false;
+
+dayofweek = 1; // Weekday: starts on Monday
+dayofmonth = 5; // Day of month: starts on the 5th
+weather = -1;
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// Restore player control
+show_debug_message('Alarm 1');
+GameState.control = true;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// Flag interstitial
+show_debug_message('Alarm 0');
+interstitial = true;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// Handle end of day
+if ( obj_door.endday ) {
+    GameState.control = false;
+    obj_door.endday = false;
+    transitionout = true;
+}
+
+// Initiate fade to black
+if ( transitionout ) { 
+    with ( obj_screenfade ) {
+        if ( screen_alpha &lt; 1 ) {
+            screen_alpha += 0.02;
+        } else {
+            other.transitionout = false;
+            other.alarm[0] = 50;
+        }
+    }
+}
+
+if ( interstitial ) {
+    show_debug_message('Checking plant growth');
+    with ( obj_plantpot ) {
+        // If watered, increment growthstage
+        if ( planted != -1 &amp;&amp; watered ) {
+            growthdays += 1;
+            show_debug_message('Days of growth: ' + string(growthdays) + '/' + string(growthdaytarget));
+            witherdays = 0;
+            if ( growthdays == growthdaytarget &amp;&amp; growthstage &lt; maxstage ) {
+                growthstage += 1;
+                growthdays = 0;
+            } 
+        }
+        // If not watered, don't grow &amp; increment towards withered
+        else if ( planted != -1 &amp;&amp; !watered &amp;&amp; !withered ) {
+            witherdays += 1;
+            show_debug_message('Days of withering: ' + string(witherdays) + '/' + string(witherdaytarget));
+            if ( witherdays == witherdaytarget ) {
+                withered = true;
+            } 
+        }
+        
+        // Deflag watered
+        if ( watered ) {
+            watered = false;
+        }
+    }
+    
+    // Advance Day
+    dayofweek += 1;
+    if ( dayofweek &gt; 7 ) {
+        dayofweek = 1;
+    }
+    dayofmonth += 1;
+    if ( dayofmonth &gt; 28 ) {
+        dayofmonth = 1;
+    }
+    
+    // TODO: Define new day
+    
+    interstitial = false;
+    transitionin = true;
+}
+
+// Fade back in 
+if ( transitionin ) {
+    with ( obj_screenfade ) {
+        if ( screen_alpha &gt; 0 ) {
+            screen_alpha -= 0.02;
+        } else {
+            other.transitionin = false;
+            other.alarm[1] = 50;
+        }
+    }
+}
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// Draw Day &amp; Month
+var daytext = '';
+var monthtext = '';
+
+if ( dayofweek == 1 ) {
+    daytext = 'Monday';
+} else if ( dayofweek == 2 ) {
+    daytext = 'Tuesday';
+} else if ( dayofweek == 3 ) {
+    daytext = 'Wednesday';
+} else if ( dayofweek == 4 ) {
+    daytext = 'Thursday';
+} else if ( dayofweek == 5 ) {
+    daytext = 'Friday';
+} else if ( dayofweek == 6 ) {
+    daytext = 'Saturday';
+} else if ( dayofweek == 7 ) {
+    daytext = 'Sunday';
+}
+
+if ( dayofmonth == 1 || dayofmonth == 21 ) {
+    monthtext = string(dayofmonth) + "st";
+} else if ( dayofmonth == 2 || dayofmonth == 22 ) {
+    monthtext = string(dayofmonth) + "nd";
+} else if ( dayofmonth == 3 || dayofmonth == 23 ) {
+    monthtext = string(dayofmonth) + "rd";
+} else {
+    monthtext = string(dayofmonth) + "th";
+}
+
+draw_text(10, 50, daytext);
+draw_text(10, 70, monthtext);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+  </events>
   <PhysicsObject>0</PhysicsObject>
   <PhysicsObjectSensor>0</PhysicsObjectSensor>
   <PhysicsObjectShape>0</PhysicsObjectShape>

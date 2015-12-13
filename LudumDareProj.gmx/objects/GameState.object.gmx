@@ -38,6 +38,9 @@ create_master_lists();
 // Create screenfade object for fade-to-black transitions
 instance_create(0, 0, obj_screenfade);
 
+// Create DayController
+instance_create(0, 0, DayController);
+
 menuItemSelected = -1;
 </string>
           </argument>

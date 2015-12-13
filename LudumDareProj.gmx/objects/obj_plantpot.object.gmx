@@ -29,12 +29,12 @@
 planted = -1; // Which seeds pot contains, else -1 if not planted
 watered = false; // If pot has been watered
 withered = false; // Has plant withered?
-witherdays = -1; // How many days has plant been unwatered?
+witherdays = 0; // How many days has plant been unwatered?
 witherdaytarget = -1; // How many days can plant be unwatered until it becomes withered
 
-growthdays = -1; // How many days has it been growing?
+growthdays = 0; // How many days has it been growing?
 growthstage = 0;
-maxstage = 5;
+maxstage = 4;
 growthdaytarget = -1; // How many days until next growth stage?
 
 image_speed = 0;
@@ -78,7 +78,7 @@ switch ( planted ) {
         else { image_index = image_number - 1; }
         break;
     case 0: // Onion
-        var plant_index = 0;
+        plant_index = 0;
         if ( withered ) { plant_index += 10; }
         else if ( watered ) { plant_index += 5; }
         image_index = plant_index + growthstage;        

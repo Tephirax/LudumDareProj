@@ -62,6 +62,13 @@ if ( GameState.control ) {
     if ( !GameState.isPaused ) {
         // If Menu isn't active
         if ( !GameState.isMenu ) {
+            // Action
+            if ( keyboard_check(ord("X")) ) {
+                keyboard_clear(ord("X"));
+                action = true;
+            } else {
+                action = false;
+            }
             // Left
             if ( keyboard_check(vk_left) ) {
                 left = true;
@@ -86,20 +93,6 @@ if ( GameState.control ) {
             } else {
                 down = false;
             }
-            // Action
-            if ( keyboard_check(vk_enter) ) {
-                keyboard_clear(vk_enter);
-                action = true;
-            } else {
-                action = false;
-            }
-            // Menu
-            if ( keyboard_check(vk_add) ) {
-                keyboard_clear(vk_add);
-                menu = true;
-            } else {
-                menu = false;
-            }      
         }
         // Else if Menu is open
         else {
@@ -119,8 +112,8 @@ if ( GameState.control ) {
                         menuButtonPressed = false;
                         GameState.menuItemSelected = -1;
                     }
-                    else if ( keyboard_check (ord('Z')) ) {
-                        keyboard_clear(ord('Z'));
+                    else if ( keyboard_check (ord('X')) ) {
+                        keyboard_clear(ord('X'));
                         // If item has already been selected, press again to confirm
                         if ( menuButtonPressed == true ) {
                             menuButtonConfirmed = true;
@@ -136,10 +129,10 @@ if ( GameState.control ) {
                             }
                         }
                     }
-                    else if ( keyboard_check (vk_add) ) {
+                    /*else if ( keyboard_check (vk_add) ) {
                         keyboard_clear(vk_add);
                         MenuController.close = true;
-                    }
+                    }*/
                 }
             }
         }
