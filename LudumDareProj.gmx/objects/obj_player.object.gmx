@@ -26,7 +26,11 @@
           <argument>
             <kind>1</kind>
             <string>/// Initialise variables
+image_index = 0;
+image_speed = 0;
+
 movespeed = 1;
+walkanimspeed = 0.08;
 facing = 'down';
 pot = 0;
 </string>
@@ -76,6 +80,8 @@ depth = y * -1;
             <string>/// Handle inputs
 if ( InputController.action ) {
     InputController.action = false;
+    image_speed = 0;
+    image_index = 0;
     // Refill watering can
     if ( (facing == 'up' &amp;&amp; place_meeting(x, y - 8, obj_bucket)) || (facing == 'left' &amp;&amp; place_meeting(x - 8, y, obj_bucket)) ) {
         show_debug_message('Watering can refilled.');
@@ -157,27 +163,35 @@ if ( InputController.action ) {
 }
 else if ( InputController.left ) {
     facing = 'left';
+    image_speed = walkanimspeed;
     if ( !place_meeting(x - movespeed, y, par_solid) ) {
         x -= movespeed;
     }
 }
 else if ( InputController.right ) {
     facing = 'right';
+    image_speed = walkanimspeed;
     if ( !place_meeting(x + movespeed, y, par_solid) ) {
         x += movespeed;
     }
 }
 else if ( InputController.up ) {
     facing = 'up';
+    image_speed = walkanimspeed;
     if ( !place_meeting(x, y - movespeed, par_solid ) ) {
         y -= movespeed;
     }
 }
 else if ( InputController.down ) {
     facing = 'down';
+    image_speed = walkanimspeed;
     if ( !place_meeting(x, y + movespeed, par_solid) ) {
         y += movespeed;
     }
+}
+// If no controls are pressed, revert to idle state
+else {
+    image_index = 0;
 }
 </string>
           </argument>
