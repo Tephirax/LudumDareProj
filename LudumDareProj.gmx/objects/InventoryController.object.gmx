@@ -59,7 +59,7 @@ ds_list_destroy(inventorylist);
         </arguments>
       </action>
     </event>
-    <event eventtype="8" enumb="64">
+    <event eventtype="8" enumb="0">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -78,13 +78,13 @@ ds_list_destroy(inventorylist);
             <kind>1</kind>
             <string>/// Draw inventory
 if ( !ds_list_empty(inventorylist) ) {
-    draw_sprite(spr_inventory, 0, 20, view_hview - 188);
-    draw_sprite(spr_tabkey, 0, 20, view_hview - 50);
+    draw_sprite(spr_tabkey, 0, 20, 15);
+    draw_sprite(spr_inventory, 0, 20, 50);
 
     // Iterate through inventory &amp; draw sprites in bottom-left of screen
     for ( i = 0; i &lt; ds_list_size(inventorylist); i++ ) {
         var spriteid = inventorylist[| i];
-        draw_sprite(GameState.master_item_list[spriteid, 7], 0, 45, view_hview - (44 + (40 * (i + 1))));
+        draw_sprite(GameState.master_item_list[spriteid, 7], 0, 44, (34 + (40 * (i + 1))));
     }
 }
 </string>

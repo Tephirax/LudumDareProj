@@ -4,7 +4,10 @@
     <Config>Configs\Default</Config>
   </Configs>
   <NewExtensions/>
-  <sounds name="sound"/>
+  <sounds name="sound">
+    <sound>sound\snd_door</sound>
+    <sound>sound\snd_water</sound>
+  </sounds>
   <sprites name="sprites">
     <sprite>sprites\spr_player_down</sprite>
     <sprite>sprites\spr_player_up</sprite>
@@ -15,9 +18,9 @@
     <sprite>sprites\spr_collision</sprite>
     <sprite>sprites\spr_bucket</sprite>
     <sprite>sprites\spr_door</sprite>
-    <sprite>sprites\spr_menu_lettuce</sprite>
-    <sprite>sprites\spr_menu_tomato</sprite>
     <sprite>sprites\spr_menu_onion</sprite>
+    <sprite>sprites\spr_menu_tomato</sprite>
+    <sprite>sprites\spr_menu_lettuce</sprite>
     <sprite>sprites\spr_menu_flower1</sprite>
     <sprite>sprites\spr_menu_flower2</sprite>
     <sprite>sprites\spr_menu_flower3</sprite>
@@ -25,8 +28,18 @@
     <sprite>sprites\spr_inventory</sprite>
     <sprite>sprites\spr_achpanel</sprite>
     <sprite>sprites\spr_tabkey</sprite>
+    <sprite>sprites\spr_flower1_pkt</sprite>
+    <sprite>sprites\spri_flower2_pkt</sprite>
+    <sprite>sprites\spr_flower3_pkt</sprite>
+    <sprite>sprites\spr_onion_pkt</sprite>
+    <sprite>sprites\spr_tomato_pkt</sprite>
+    <sprite>sprites\spr_lettuce_pkt</sprite>
   </sprites>
-  <backgrounds name="background"/>
+  <backgrounds name="background">
+    <background>background\bg_balcony</background>
+    <background>background\bg_ledge</background>
+    <background>background\bg_ledge2</background>
+  </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\create_master_lists.gml</script>
@@ -41,6 +54,7 @@
       <script>scripts\statestop.gml</script>
     </scripts>
     <script>scripts\scr_assigngrowth.gml</script>
+    <script>scripts\scr_water_particles.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\GameState</object>
@@ -50,6 +64,7 @@
       <object>objects\MenuController</object>
       <object>objects\InventoryController</object>
       <object>objects\AchievementController</object>
+      <object>objects\ParticleController</object>
     </objects>
     <objects name="Game Objects">
       <object>objects\par_solid</object>

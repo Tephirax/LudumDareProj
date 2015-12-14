@@ -30,7 +30,7 @@ control = true; // Are controls active
 isMenu = false; // Is the menu open
 isPaused = false; // Is the game paused
 
-maxWater = 6;
+maxWater = 5;
 waterInCan = maxWater;
 
 create_master_lists();
@@ -46,6 +46,9 @@ instance_create(0, 0, InventoryController);
 
 // Create AchievementController
 instance_create(0, 0, AchievementController);
+
+// Create ParticleController
+instance_create(0, 0, ParticleController);
 
 menuItemSelected = -1;
 </string>

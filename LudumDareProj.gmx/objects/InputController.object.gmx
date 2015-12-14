@@ -33,6 +33,7 @@ down = false;
 action = false;
 achbutton = false;
 menu = false;
+select = false;
 
 menuButtonPressed = false;
 menuButtonConfirmed = false;
@@ -73,36 +74,60 @@ if ( GameState.control ) {
                     achbutton = !achbutton;
                 }
             }
-            // Action
-            if ( keyboard_check(ord("X")) ) {
-                keyboard_clear(ord("X"));
-                action = true;
-            } else {
-                action = false;
+            // If Achievement Panel isn't active
+            if ( !achbutton ) {
+                // Action
+                if ( keyboard_check(ord("X")) ) {
+                    keyboard_clear(ord("X"));
+                    action = true;
+                } else {
+                    action = false;
+                }
+                // Left
+                if ( keyboard_check(vk_left) ) {
+                    left = true;
+                } else { 
+                    left = false; 
+                }
+                // Right    
+                if ( keyboard_check(vk_right) ) {
+                    right = true;
+                } else {
+                    right = false;
+                }
+                // Up
+                if ( keyboard_check(vk_up) ) {
+                    up = true;
+                } else {
+                    up = false;
+                }
+                // Down
+                if ( keyboard_check(vk_down) ) {
+                    down = true;
+                } else {
+                    down = false;
+                }
             }
-            // Left
-            if ( keyboard_check(vk_left) ) {
-                left = true;
-            } else { 
-                left = false; 
-            }
-            // Right    
-            if ( keyboard_check(vk_right) ) {
-                right = true;
-            } else {
-                right = false;
-            }
-            // Up
-            if ( keyboard_check(vk_up) ) {
-                up = true;
-            } else {
-                up = false;
-            }
-            // Down
-            if ( keyboard_check(vk_down) ) {
-                down = true;
-            } else {
-                down = false;
+            // Else if Achievement Panel is open
+            else {
+                if ( keyboard_check(vk_up) ) {
+                    keyboard_clear(vk_up);
+                    up = true;
+                } else {
+                    up = false;
+                }
+                if ( keyboard_check(vk_down) ) {
+                    keyboard_clear(vk_down);
+                    down = true;
+                } else {
+                    down = false;
+                }
+                if ( keyboard_check(ord("X")) ) {
+                    keyboard_clear(ord("X"));
+                    select = true;
+                } else {
+                    select = false;
+                }
             }
         }
         // Else if Menu is open

@@ -26,6 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>/// Initialise variables
+selected = 0;
 
 // Create ds_list
 achievementlist = ds_list_create();
@@ -76,14 +77,88 @@ ds_list_destroy(achievementlist);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/// Create list of things to make from inventory
-
+            <string>/// Achievement Panel Controls
+if ( InputController.achbutton ) {
+    if ( InputController.select ) {
+        InputController.select = false;
+        // TODO: Consume items and complete achievement
+    }
+    else if ( InputController.up ) {
+        InputController.up = false;
+        selected -= 1;
+        if ( selected &lt; 0 ) {
+            selected = ds_list_size(achievementlist) - 1;
+        }
+    } else if ( InputController.down ) {
+        InputController.down = false;
+        selected += 1;
+        if ( selected &gt;= ds_list_size(achievementlist) ) {
+            selected = 0;
+        }
+    }    
+}
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="8" enumb="64">
+    <event eventtype="7" enumb="10">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// Create list of things to make from inventory
+var numOnions = 0;
+var numTomatoes = 0;
+var numLettuces = 0;
+var targetOnions = 0;
+var targetTomatoes = 0;
+var targetLettuces = 0;
+ds_list_clear(achievementlist);
+
+if ( !ds_list_empty(InventoryController.inventorylist) ) {
+    // Iterate through inventory &amp; count number of each item
+    for ( i = 0; i &lt; ds_list_size(InventoryController.inventorylist); i++ ) {
+        if ( InventoryController.inventorylist[| i] = 0 ) {
+            numOnions += 1;            
+        } else if ( InventoryController.inventorylist[| i] = 1 ) {
+            numTomatoes += 1;
+        } else if ( InventoryController.inventorylist[| i] = 2 ) {
+            numLettuces += 1;
+        }
+    }   
+}
+
+// Iterate through master_achievement_list &amp; see whether contents of inventorylist meet criteria
+for ( j = 0; j &lt;= GameState.ach_count; j++ ) {
+    targetOnions = GameState.master_achievement_list[j, 2];
+    targetTomatoes = GameState.master_achievement_list[j, 3];
+    targetLettuces = GameState.master_achievement_list[j, 4];
+    
+    if ( numOnions &gt;= targetOnions &amp;&amp; numTomatoes &gt;= targetTomatoes &amp;&amp; numLettuces &gt;= targetLettuces ) {
+        // GameState.master_achievement_list[j, 5] = 1;
+        // Update ds_list achievementlist
+        ds_list_add(achievementlist, j);
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -102,13 +177,25 @@ ds_list_destroy(achievementlist);
             <kind>1</kind>
             <string>/// Create Achievement panel when tab pressed
 if ( InputController.achbutton ) {
-    var col1 = make_color_rgb(64, 64, 256)
+    // Draw rectangle
+    var col1 = make_color_rgb(64, 64, 255)
     draw_set_color(col1);
-    draw_roundrect(80, view_hview - 188, view_wview - 20, view_hview - 24, 0);
-    var col2 = make_color_rgb(0, 0, 128)
+    draw_roundrect(80, 15, view_wview - 20, 179, 0);
+    var col2 = make_color_rgb(0, 0, 128);
     draw_set_color(col2);
-    draw_roundrect(80, view_hview - 188, view_wview - 20, view_hview - 24, 1);
+    draw_roundrect(80, 15, view_wview - 20, 179, 1);
     draw_set_color(c_black);
+    
+    // Draw text of related achievements
+    for ( i = 0; i &lt; ds_list_size(achievementlist); i++ ) {
+        if ( i = selected ) {
+            draw_set_alpha(1);
+        } else {
+            draw_set_alpha(0.5);
+        }
+        draw_text( 90, 25 + (20 * i), GameState.master_achievement_list[achievementlist[| i], 1] )
+        draw_set_alpha(1);
+    }
 }
 </string>
           </argument>

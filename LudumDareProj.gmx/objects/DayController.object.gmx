@@ -110,6 +110,13 @@ interstitial = true;
 if ( obj_door.endday ) {
     GameState.control = false;
     obj_door.endday = false;
+    
+    // Animate door
+    obj_door.image_index = 1;
+    audio_play_sound(snd_door, 1, 0);
+    
+    InputController.up = false;
+    
     transitionout = true;
 }
 
@@ -117,7 +124,7 @@ if ( obj_door.endday ) {
 if ( transitionout ) { 
     with ( obj_screenfade ) {
         if ( screen_alpha &lt; 1 ) {
-            screen_alpha += 0.02;
+            screen_alpha += 0.01;
         } else {
             other.transitionout = false;
             other.alarm[0] = 15;
@@ -174,7 +181,12 @@ if ( interstitial ) {
 if ( transitionin ) {
     with ( obj_screenfade ) {
         if ( screen_alpha &gt; 0 ) {
-            screen_alpha -= 0.02;
+            screen_alpha -= 0.01;
+            if ( screen_alpha = 0.5 ) {
+                // Animate door
+                obj_door.image_index = 0;
+                audio_play_sound(snd_door, 1, 0);
+            }
         } else {
             other.transitionin = false;
             other.alarm[1] = 15;

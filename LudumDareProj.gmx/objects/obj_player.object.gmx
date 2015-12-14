@@ -80,12 +80,13 @@ depth = y * -1;
             <string>/// Handle inputs
 if ( InputController.action ) {
     InputController.action = false;
-    image_speed = 0;
     image_index = 0;
+    image_speed = 0;
+
     // Refill watering can
     if ( (facing == 'up' &amp;&amp; place_meeting(x, y - 8, obj_bucket)) || (facing == 'left' &amp;&amp; place_meeting(x - 8, y, obj_bucket)) ) {
         show_debug_message('Watering can refilled.');
-        // TODO: Play audio
+        audio_play_sound(snd_water, 0, 0);
         GameState.waterInCan = GameState.maxWater;
     }
     // If in front of pot...
@@ -93,7 +94,7 @@ if ( InputController.action ) {
            || (facing == 'up' &amp;&amp; place_meeting(x, y - 8, obj_plantpot)) || (facing == 'right' &amp;&amp; place_meeting(x + 8, y, obj_plantpot)) ) {
         if ( facing == 'down' ) { pot = instance_position(x, y + 8, obj_plantpot); }
         else if ( facing == 'left' ) { pot = instance_position(x - 24, y - 8, obj_plantpot); }
-        else if ( facing == 'up' ) { pot = instance_position(x, y - 40, obj_plantpot); }
+        else if ( facing == 'up' ) { pot = instance_position(x, y - 24, obj_plantpot); }
         else if ( facing == 'right' ) { pot = instance_position(x + 24, y - 8, obj_plantpot); }
         
         if ( instance_exists(pot) ) {
@@ -131,11 +132,17 @@ if ( InputController.action ) {
                         maxstage = 4;
                         growthdaytarget = -1;
                     }
+                    // Update Achievement List
+                    with ( AchievementController ) {
+                        event_user(0);
+                    }
                 }
                 // Water pot (if watering can has enough water0
                 else if ( GameState.waterInCan &gt; 0 ) {
                     show_debug_message('Pot watered');
-                    // TODO: Play watering animation 
+                                        
+                    scr_water_particles();
+                     
                     pot.watered = true;
                     GameState.waterInCan -= 1;
                 
@@ -155,43 +162,50 @@ if ( InputController.action ) {
         obj_door.endday = true;
     }
     // Otherwise, water whatever's in front of you
-    else {
+    else if ( GameState.waterInCan &gt; 0 ) {
         show_debug_message('Water water everywhere');
-        // TODO: Play watering animation in facing direction
+        
+        scr_water_particles();
+        
         GameState.waterInCan -= 1;
     }    
 }
-else if ( InputController.left ) {
-    facing = 'left';
-    image_speed = walkanimspeed;
-    if ( !place_meeting(x - movespeed, y, par_solid) ) {
-        x -= movespeed;
+else if ( !GameState.isMenu ) {
+    if ( InputController.left ) {
+        facing = 'left';
+        image_speed = walkanimspeed;
+        if ( !place_meeting(x - movespeed, y, par_solid) ) {
+            x -= movespeed;
+        }
     }
-}
-else if ( InputController.right ) {
-    facing = 'right';
-    image_speed = walkanimspeed;
-    if ( !place_meeting(x + movespeed, y, par_solid) ) {
-        x += movespeed;
+    else if ( InputController.right ) {
+        facing = 'right';
+        image_speed = walkanimspeed;
+        if ( !place_meeting(x + movespeed, y, par_solid) ) {
+            x += movespeed;
+        }
     }
-}
-else if ( InputController.up ) {
-    facing = 'up';
-    image_speed = walkanimspeed;
-    if ( !place_meeting(x, y - movespeed, par_solid ) ) {
-        y -= movespeed;
+    else if ( InputController.up ) {
+        facing = 'up';
+        image_speed = walkanimspeed;
+        if ( !place_meeting(x, y - movespeed, par_solid ) ) {
+            y -= movespeed;
+        }
     }
-}
-else if ( InputController.down ) {
-    facing = 'down';
-    image_speed = walkanimspeed;
-    if ( !place_meeting(x, y + movespeed, par_solid) ) {
-        y += movespeed;
+    else if ( InputController.down ) {
+        facing = 'down';
+        image_speed = walkanimspeed;
+        if ( !place_meeting(x, y + movespeed, par_solid) ) {
+            y += movespeed;
+        }
     }
-}
-// If no controls are pressed, revert to idle state
-else {
+    // If no controls are pressed, revert to idle state
+    else {
+        image_index = 0;
+    }
+} else {
     image_index = 0;
+    image_speed = 0;
 }
 </string>
           </argument>
