@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-10000</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -25,32 +25,47 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/// Initialise variables
-control = true; // Are controls active
-isMenu = false; // Is the menu open
-isPaused = false; // Is the game paused
-
-maxWater = 5;
-waterInCan = maxWater;
-
-create_master_lists();
-
-// Create screenfade object for fade-to-black transitions
-instance_create(0, 0, obj_screenfade);
-
-// Create DayController
-instance_create(0, 0, DayController);
-
-// Create InventoryController
-instance_create(0, 0, InventoryController);
-
-// Create AchievementController
-instance_create(0, 0, AchievementController);
-
-// Create ParticleController
-instance_create(0, 0, ParticleController);
-
-menuItemSelected = -1;
+            <string>/// Get variables
+achievementnum = AchievementController.achievementsel;
+achievementname = GameState.master_achievement_list[achievementnum, 1];
+achievementrem = AchievementController.achievementremaining;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// Draw textbox
+var col1 = make_color_rgb(64, 64, 255);
+draw_set_color(col1);
+draw_roundrect(x - 200, y - 35, x + 200, y + 35, 0);
+var col2 = make_color_rgb(0, 0, 128);
+draw_set_color(col2);
+draw_roundrect(x - 200, y - 35, x + 200, y + 35, 1);
+draw_set_color(c_white);
+draw_text(x - 190, y - 27, "You made " + achievementname + "!");
+if ( achievementrem &gt; 0 ) {
+    draw_text(x - 190, y + 3, "There are " + string(achievementrem) + " recipes left to find.");
+}
+else {
+    draw_text(x - 190, y + 3, "Congratulations! You found all the recipes!");
+}
 </string>
           </argument>
         </arguments>

@@ -71,11 +71,19 @@ if ( GameState.control ) {
             if ( keyboard_check(vk_tab) ) {
                 keyboard_clear(vk_tab);
                 if ( !ds_list_empty(InventoryController.inventorylist) ) {
-                    achbutton = !achbutton;
+                    if ( achbutton ) {
+                        achbutton = false;
+                    } else {
+                        achbutton = true;
+                        up = false;
+                        down = false;
+                        left = false;
+                        right = false;
+                    }
                 }
             }
             // If Achievement Panel isn't active
-            if ( !achbutton ) {
+            if ( !achbutton &amp;&amp; !instance_exists(obj_textbox) ) {
                 // Action
                 if ( keyboard_check(ord("X")) ) {
                     keyboard_clear(ord("X"));
@@ -165,10 +173,6 @@ if ( GameState.control ) {
                             }
                         }
                     }
-                    /*else if ( keyboard_check (vk_add) ) {
-                        keyboard_clear(vk_add);
-                        MenuController.close = true;
-                    }*/
                 }
             }
         }

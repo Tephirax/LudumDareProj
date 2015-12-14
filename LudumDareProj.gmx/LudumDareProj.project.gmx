@@ -10,6 +10,7 @@
   </sounds>
   <sprites name="sprites">
     <sprite>sprites\spr_player_down</sprite>
+    <sprite>sprites\spr_player_down_max</sprite>
     <sprite>sprites\spr_player_up</sprite>
     <sprite>sprites\spr_player_left</sprite>
     <sprite>sprites\spr_player_right</sprite>
@@ -34,11 +35,23 @@
     <sprite>sprites\spr_onion_pkt</sprite>
     <sprite>sprites\spr_tomato_pkt</sprite>
     <sprite>sprites\spr_lettuce_pkt</sprite>
+    <sprite>sprites\spr_railing_left</sprite>
+    <sprite>sprites\spr_railing_left_corner</sprite>
+    <sprite>sprites\spr_railing_right_corner</sprite>
+    <sprite>sprites\spr_railing_right</sprite>
+    <sprite>sprites\spr_railing_down</sprite>
+    <sprite>sprites\spr_watergauge</sprite>
+    <sprite>sprites\spr_babeh</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\bg_balcony</background>
     <background>background\bg_ledge</background>
     <background>background\bg_ledge2</background>
+    <background>background\background3</background>
+    <background>background\bg_cloudy</background>
+    <background>background\bg_sunset</background>
+    <background>background\bg_sunny</background>
+    <background>background\bg_objects</background>
   </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
@@ -56,6 +69,10 @@
     <script>scripts\scr_assigngrowth.gml</script>
     <script>scripts\scr_water_particles.gml</script>
   </scripts>
+  <fonts name="fonts">
+    <font>fonts\font0</font>
+    <font>fonts\font1</font>
+  </fonts>
   <objects name="objects">
     <object>objects\GameState</object>
     <objects name="Controllers">
@@ -74,6 +91,14 @@
       <object>objects\obj_collision</object>
       <object>objects\obj_bucket</object>
       <object>objects\obj_door</object>
+      <object>objects\obj_railing_left</object>
+      <object>objects\obj_railing_left_corner</object>
+      <object>objects\obj_railing_down</object>
+      <object>objects\obj_railing_right_corner</object>
+      <object>objects\obj_railing_right</object>
+      <object>objects\obj_textbox</object>
+      <object>objects\obj_watergauge</object>
+      <object>objects\obj_babeh</object>
     </objects>
     <objects name="Menu Objects">
       <object>objects\par_item_menu</object>

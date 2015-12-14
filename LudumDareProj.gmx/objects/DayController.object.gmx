@@ -32,8 +32,91 @@ transitionin = false;
 
 dayofweek = 1; // Weekday: starts on Monday
 dayofmonth = 5; // Day of month: starts on the 5th
-weather = -1;
+background_index[0] = choose(bg_sunset, bg_cloudy, bg_sunny);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="9">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// Restore player control
+obj_player.visible = true;
+GameState.control = true;
 
+// Close door
+obj_door.image_index = 0;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="8">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// Open door
+show_debug_message('Alarm 8');
+
+// Animate door
+obj_door.image_index = 1;
+audio_play_sound(snd_door, 1, 0);
+
+// Time from door opening to door closing;
+alarm[9] = 105;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="4">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// Flag interstitial
+show_debug_message('Alarm 4');
+interstitial = true;
 </string>
           </argument>
         </arguments>
@@ -56,9 +139,8 @@ weather = -1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/// Restore player control
-show_debug_message('Alarm 1');
-GameState.control = true;
+            <string>/// Flag transitionout
+transitionout = true;
 </string>
           </argument>
         </arguments>
@@ -81,9 +163,11 @@ GameState.control = true;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/// Flag interstitial
-show_debug_message('Alarm 0');
-interstitial = true;
+            <string>/// Shut door
+obj_door.image_index = 0;
+obj_player.visible = false;
+// Time from door close to begin fade-out
+alarm[1] = 60;
 </string>
           </argument>
         </arguments>
@@ -116,8 +200,8 @@ if ( obj_door.endday ) {
     audio_play_sound(snd_door, 1, 0);
     
     InputController.up = false;
-    
-    transitionout = true;
+    // Time from door open to door close
+    alarm[0] = 105;
 }
 
 // Initiate fade to black
@@ -127,7 +211,8 @@ if ( transitionout ) {
             screen_alpha += 0.01;
         } else {
             other.transitionout = false;
-            other.alarm[0] = 15;
+            // Time from fadeout to fade back in
+            other.alarm[4] = 30;
         }
     }
 }
@@ -171,7 +256,15 @@ if ( interstitial ) {
     }
     obj_player.facing = 'down';
     
-    // TODO: Define new day
+    // Define new day
+    background_index[0] = choose(bg_sunset, bg_cloudy, bg_sunny);
+    
+    // Set babeh 
+    if ( random(10) &gt; 9 ) {
+        obj_babeh.visible = true;
+    } else {
+        obj_babeh.visible = false;
+    }
     
     interstitial = false;
     transitionin = true;
@@ -182,14 +275,10 @@ if ( transitionin ) {
     with ( obj_screenfade ) {
         if ( screen_alpha &gt; 0 ) {
             screen_alpha -= 0.01;
-            if ( screen_alpha = 0.5 ) {
-                // Animate door
-                obj_door.image_index = 0;
-                audio_play_sound(snd_door, 1, 0);
-            }
         } else {
             other.transitionin = false;
-            other.alarm[1] = 15;
+            // Time from end of fade in to door opening
+            other.alarm[8] = 90;
         }
     }
 }
@@ -219,6 +308,7 @@ if ( transitionin ) {
             <string>/// Draw Day &amp; Month
 var daytext = '';
 var monthtext = '';
+var oldcolor = draw_get_color();
 
 if ( dayofweek == 1 ) {
     daytext = 'Monday';
@@ -246,8 +336,13 @@ if ( dayofmonth == 1 || dayofmonth == 21 ) {
     monthtext = string(dayofmonth) + "th";
 }
 
-draw_text(10, 50, daytext);
-draw_text(10, 70, monthtext);
+draw_set_color(c_black);
+draw_set_font(font1);
+
+draw_text(view_wview - 20 - string_width(daytext), view_hview - 50, daytext);
+draw_text(view_wview - 20 - string_width(monthtext), view_hview - 30, monthtext);
+
+draw_set_color(oldcolor);
 </string>
           </argument>
         </arguments>

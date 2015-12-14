@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-1000</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -81,7 +81,7 @@ if ( !ds_list_empty(inventorylist) ) {
     draw_sprite(spr_tabkey, 0, 20, 15);
     draw_sprite(spr_inventory, 0, 20, 50);
 
-    // Iterate through inventory &amp; draw sprites in bottom-left of screen
+    // Iterate through inventory &amp; draw sprites in top-left of screen
     for ( i = 0; i &lt; ds_list_size(inventorylist); i++ ) {
         var spriteid = inventorylist[| i];
         draw_sprite(GameState.master_item_list[spriteid, 7], 0, 44, (34 + (40 * (i + 1))));

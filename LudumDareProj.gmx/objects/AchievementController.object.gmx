@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-1000</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -27,10 +27,12 @@
             <kind>1</kind>
             <string>/// Initialise variables
 selected = 0;
+draw_set_font(font0);
 
 // Create ds_list
 achievementlist = ds_list_create();
-
+achievementsel = 0;
+achievementremaining = GameState.ach_count;
 </string>
           </argument>
         </arguments>
@@ -78,10 +80,51 @@ ds_list_destroy(achievementlist);
           <argument>
             <kind>1</kind>
             <string>/// Achievement Panel Controls
-if ( InputController.achbutton ) {
+if ( instance_exists (obj_textbox) ) {
     if ( InputController.select ) {
+        with ( obj_textbox ) {
+            instance_destroy();
+        }
         InputController.select = false;
-        // TODO: Consume items and complete achievement
+    }
+}
+else if ( InputController.achbutton ) {
+    if ( InputController.select ) {
+        show_debug_message("Achievement Selected");
+        InputController.select = false;
+        var consumeonions = GameState.master_achievement_list[achievementlist[| selected], 2];
+        var consumetomatoes = GameState.master_achievement_list[achievementlist[| selected], 3];
+        var consumelettuces = GameState.master_achievement_list[achievementlist[| selected], 4];
+        // Consume items and complete achievement
+        repeat ( consumeonions ) {
+            var onion = ds_list_find_index(InventoryController.inventorylist, 0);
+            // Deleting
+            ds_list_delete(InventoryController.inventorylist, onion);
+        }
+        repeat ( consumetomatoes ) { 
+            var tomato = ds_list_find_index(InventoryController.inventorylist, 1);
+            ds_list_delete(InventoryController.inventorylist, tomato);
+        }
+        repeat ( consumelettuces ) {
+            var lettuce = ds_list_find_index(InventoryController.inventorylist, 2);
+            ds_list_delete(InventoryController.inventorylist, lettuce);
+        }
+            
+        show_debug_message('selected = ' + string(selected));
+        show_debug_message('achievementlist[| selected] = ' + string(achievementlist[| selected]));
+        show_debug_message('Achievement = ' + string(GameState.master_achievement_list[achievementlist[| selected], 1] ));
+        achievementsel = achievementlist[| selected];
+        // Set achievement to complete
+        GameState.master_achievement_list[achievementlist[| selected], 5] = 1;               
+        achievementremaining -= 1;
+         
+        event_user(0);
+           
+        if ( ds_list_size(InventoryController.inventorylist) == 0 || ds_list_size(achievementlist) == 0) {
+            InputController.achbutton = false;
+        }
+            
+        instance_create(view_wview / 2, view_hview / 2, obj_textbox);
     }
     else if ( InputController.up ) {
         InputController.up = false;
@@ -89,13 +132,15 @@ if ( InputController.achbutton ) {
         if ( selected &lt; 0 ) {
             selected = ds_list_size(achievementlist) - 1;
         }
+        show_debug_message('selected moves to ' + string(selected));
     } else if ( InputController.down ) {
         InputController.down = false;
         selected += 1;
         if ( selected &gt;= ds_list_size(achievementlist) ) {
             selected = 0;
         }
-    }    
+        show_debug_message('selected moves to ' + string(selected));  
+    }
 }
 </string>
           </argument>
@@ -147,12 +192,14 @@ for ( j = 0; j &lt;= GameState.ach_count; j++ ) {
     targetTomatoes = GameState.master_achievement_list[j, 3];
     targetLettuces = GameState.master_achievement_list[j, 4];
     
-    if ( numOnions &gt;= targetOnions &amp;&amp; numTomatoes &gt;= targetTomatoes &amp;&amp; numLettuces &gt;= targetLettuces ) {
-        // GameState.master_achievement_list[j, 5] = 1;
+    if ( numOnions &gt;= targetOnions &amp;&amp; numTomatoes &gt;= targetTomatoes &amp;&amp; numLettuces &gt;= targetLettuces &amp;&amp; GameState.master_achievement_list[j, 5] == 0 ) {
         // Update ds_list achievementlist
         ds_list_add(achievementlist, j);
     }
 }
+
+// Reset selector
+selected = 0;
 </string>
           </argument>
         </arguments>
@@ -178,13 +225,13 @@ for ( j = 0; j &lt;= GameState.ach_count; j++ ) {
             <string>/// Create Achievement panel when tab pressed
 if ( InputController.achbutton ) {
     // Draw rectangle
-    var col1 = make_color_rgb(64, 64, 255)
+    var col1 = make_color_rgb(64, 64, 255);
     draw_set_color(col1);
     draw_roundrect(80, 15, view_wview - 20, 179, 0);
     var col2 = make_color_rgb(0, 0, 128);
     draw_set_color(col2);
     draw_roundrect(80, 15, view_wview - 20, 179, 1);
-    draw_set_color(c_black);
+    draw_set_color(c_white);
     
     // Draw text of related achievements
     for ( i = 0; i &lt; ds_list_size(achievementlist); i++ ) {
@@ -193,7 +240,47 @@ if ( InputController.achbutton ) {
         } else {
             draw_set_alpha(0.5);
         }
-        draw_text( 90, 25 + (20 * i), GameState.master_achievement_list[achievementlist[| i], 1] )
+        draw_text( 94, 25 + (24 * i), GameState.master_achievement_list[achievementlist[| i], 1] )
+        
+        // Draw icons
+        iconn = 0;
+        if ( GameState.master_achievement_list[achievementlist[| i], 2] &gt; 0 ) {
+            draw_sprite_ext(spr_menu_onion, 0, 400 + (20 * iconn), 36 + (24 * i), 0.75, 0.75, 0, image_blend, image_alpha);
+            iconn += 1;
+            if ( GameState.master_achievement_list[achievementlist[| i], 2] &gt; 1 ) {
+                draw_sprite_ext(spr_menu_onion, 0, 400 + (20 * iconn), 36 + (24 * i), 0.75, 0.75, 0, image_blend, image_alpha);
+                iconn += 1;
+                if ( GameState.master_achievement_list[achievementlist[| i], 2] &gt; 2 ) {
+                    draw_sprite_ext(spr_menu_onion, 0, 400 + (20 * iconn), 36 + (24 * i), 0.75, 0.75, 0, image_blend, image_alpha);
+                    iconn += 1;
+                }
+            }
+        } 
+        if ( GameState.master_achievement_list[achievementlist[| i], 3] &gt; 0 ) {
+            draw_sprite_ext(spr_menu_tomato, 0, 400 + (20 * iconn), 36 + (24 * i), 0.75, 0.75, 0, image_blend, image_alpha);
+            iconn += 1;
+            if ( GameState.master_achievement_list[achievementlist[| i], 3] &gt; 1 ) {
+                draw_sprite_ext(spr_menu_tomato, 0, 400 + (20 * iconn), 36 + (24 * i), 0.75, 0.75, 0, image_blend, image_alpha);
+                iconn += 1;
+                if ( GameState.master_achievement_list[achievementlist[| i], 3] &gt; 2 ) {
+                    draw_sprite_ext(spr_menu_tomatp, 0, 400 + (20 * iconn), 36 + (24 * i), 0.75, 0.75, 0, image_blend, image_alpha);
+                    iconn += 1;
+                }
+            }
+        }
+        if ( GameState.master_achievement_list[achievementlist[| i], 4] &gt; 0 ) {
+            draw_sprite_ext(spr_menu_lettuce, 0, 400 + (20 * iconn), 36 + (24 * i), 0.75, 0.75, 0, image_blend, image_alpha);
+            iconn += 1;
+            if ( GameState.master_achievement_list[achievementlist[| i], 4] &gt; 1 ) {
+                draw_sprite_ext(spr_menu_lettuce, 0, 400 + (20 * iconn), 36 + (24 * i), 0.75, 0.75, 0, image_blend, image_alpha);
+                iconn += 1;
+                if ( GameState.master_achievement_list[achievementlist[| i], 4] &gt; 2 ) {
+                    draw_sprite_ext(spr_menu_lettuce, 0, 400 + (20 * iconn), 36 + (24 * i), 0.75, 0.75, 0, image_blend, image_alpha);
+                    iconn += 1;
+                }
+            }
+        }
+        
         draw_set_alpha(1);
     }
 }

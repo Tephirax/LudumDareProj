@@ -229,7 +229,11 @@ else if ( !GameState.isMenu ) {
             <kind>1</kind>
             <string>/// Handle sprite facing
 if ( facing = 'down' ) {
-    sprite_index = spr_player_down;
+    if ( GameState.waterInCan == GameState.maxWater ) {
+        sprite_index = spr_player_down_max;
+    } else {
+        sprite_index = spr_player_down;
+    }
 }
 else if ( facing = 'up' ) {
     sprite_index = spr_player_up;

@@ -5,7 +5,7 @@ switch ( planted ) {
         witherdaytarget = -1;
         break;
     case 0: // Onions
-        growthdaytarget = 4;
+        growthdaytarget = 2;
         witherdaytarget = 4;
         break;
     case 1: // Tomatoes
@@ -13,7 +13,7 @@ switch ( planted ) {
         witherdaytarget = 3;
         break;
     case 2: // Lettuce
-        growthdaytarget = 2;
+        growthdaytarget = 4;
         witherdaytarget = 2;
         break;
     case 3: // Flower 1
